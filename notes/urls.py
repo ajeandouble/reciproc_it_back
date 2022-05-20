@@ -24,7 +24,10 @@ urlpatterns = [
     # API VIEWS
     path('api/listNotes', api_views.NoteList.as_view()),
     path('api/noteDetail/<uuid:userId>/', api_views.NoteDetail.as_view()),
-    path('api/account/register', api_views.RegistrationView.as_view()),
+    path('api/account/register', api_views.RegistrationView.as_view(), name='api/account/register'),
+    
     # APP VIEWS
     path('', app_views.homePageView),
+    path('notes/', app_views.NotesView),
+    path('register/', app_views.RegisterView, name='register'),
 ]
