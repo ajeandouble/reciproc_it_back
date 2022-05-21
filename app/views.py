@@ -2,9 +2,20 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from .forms import ( RegisterForm, LoginForm )
+import requests
 
 def homePageView(request):
-	return render(request, 'index.html')
+	# if request.method == 'POST':
+	# 	form = LoginForm(request.POST)
+	# 	print(request.POST)
+	# 	print(form.is_valid())
+	# 	response = request.post('localhost:')
+	# 	if form.is_valid():
+	# 		return HttpResponseRedirect('/notes')
+
+	# else:
+	form = LoginForm()
+	return render(request, 'index.html', {'form': form})
 
 def RegisterView(request):
 	if request.method == 'POST':
@@ -18,10 +29,15 @@ def RegisterView(request):
 	# if a GET (or any other method) we'll create a blank form
 	else:
 		form = RegisterForm()
-  
+
 	return render(request, 'register.html', {'form': form})
 
 
 def NotesView(request):
+	if not request.user.is_authenticated:
+		return HttpResponseRedirect('/')
+	# MOVE MODELS/VIEWS here
+	# CHECK IF USER IS AUTHENTICATED IN THE API
+	# ADD A FIELD IN THE TEMPLATE TO ADD A NEW N OTE
 	return render(request, 'notes.html')
 

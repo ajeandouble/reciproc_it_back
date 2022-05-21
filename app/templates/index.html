@@ -1,13 +1,68 @@
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Login</title>
 <style>
 	* {
 		text-align: center;
 	}
 </style>
-<header class="header">
-</header>
-<section>
-	<h1>Login</h1>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Login</title>
+</head>
+<body>
+	{% block content %}
+	{% endblock %}
+	<header class="header">
+	</header>
+	<h2>Login</h2>
+	{% comment %} Trick to avoid redirection after the POST{% endcomment %}
+	{% comment %} <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>  {% endcomment %}
+	<form method="POST" id="loginForm">
+		<label for="loginForm">Email: </label>
+		<input id="email" name="email">
+		<label for="loginForm">Password: </label>
+		<input id="password" name="password">
+		<input type="submit">Login</input>
+	</form>
+	<p id="error" style="color: red; font-weight: bolder;"></p>
 	<a href="/register">Register</a>
-</section>
+	<script>
+		window.addEventListener( "load", function () {
+			function sendData() {
+			  const XHR = new XMLHttpRequest();
+			  const FD = new FormData( form );
+		  
+			  XHR.addEventListener( "load", function(event) {
+			  } );
+			  XHR.addEventListener( "error", (event) => {
+			  } );
+
+			  XHR.onreadystatechange = () => {
+				if (XHR.readyState == XMLHttpRequest.DONE) {
+					const response = JSON.parse(XHR.responseText);
+					if (XHR.status == 200) {
+						window.location.href = "/notes";
+					}
+					else {
+						const paragraph = document.getElementById("error");
+						paragraph.innerHTML = '<b><i>Invalid credentials<b><i>';
+						paragraph.appendChild(error);
+					}
+				}
+			}
+			  // Set up our request
+			  XHR.open( "POST", "/api/account/login");
+		  
+			  // The data sent is what the user provided in the form
+			  XHR.send( FD );
+			}
+			// Access the form element...
+			const form = document.getElementById( "loginForm" );
+
+			// ...and take over its submit event.
+			form.addEventListener( "submit", function ( event ) {
+			  event.preventDefault();
+				console.log('what')
+			  sendData();
+			} );
+		  } );
+</script>
+</body>

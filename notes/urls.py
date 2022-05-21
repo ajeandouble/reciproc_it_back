@@ -25,9 +25,10 @@ urlpatterns = [
     path('api/listNotes', api_views.NoteList.as_view()),
     path('api/noteDetail/<uuid:userId>/', api_views.NoteDetail.as_view()),
     path('api/account/register', api_views.RegistrationView.as_view(), name='api/account/register'),
+    path('api/account/login', api_views.LoginView.as_view(), name='api/account/login'),
     
     # APP VIEWS
-    path('', app_views.homePageView),
-    path('notes/', app_views.NotesView),
+    path('', app_views.homePageView, name='index'),
+    path('notes/', app_views.NotesView, name='notes'),
     path('register/', app_views.RegisterView, name='register'),
 ]

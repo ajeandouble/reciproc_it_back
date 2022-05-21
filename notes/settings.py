@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -120,7 +121,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
 
+
+# remove STATIC_ROOT
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -134,9 +140,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-	'DEFAULT_PERMISSION_CLASSES': [
-		'rest_framework.permissions.AllowAny'
-	],
+	# 'DEFAULT_PERMISSION_CLASSES': [
+	# 	'rest_framework.permissions.AllowAny'
+	# ],
 }
 
 import datetime
@@ -145,5 +151,9 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
 }
+
 AUTH_PASSWORD_VALIDATORS = [
 ]
+
+AUTH_USER_MODEL = 'api.MyUser'
+AUTH_PROFILE_MODULE = 'api.MyUser'

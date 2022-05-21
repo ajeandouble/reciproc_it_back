@@ -1,44 +1,79 @@
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Login</title>
-{% comment %} 
-{% block content %}
-
-  {% if form.errors %}
-    <p>Your username and password didn't match. Please try again.</p>
-  {% endif %}
-
-  {% if next %}
-    {% if user.is_authenticated %}
-      <p>Your account doesn't have access to this page. To proceed,
-      please login with an account that has access.</p>
-    {% else %}
-      <p>Please login to see this page.</p>
-    {% endif %}
-  {% endif %}
-
-  <form method="post" action="{% url 'api/account/register' %}">
-    {% csrf_token %}
-    <table>
-      <tr>
-        <td>{{ form.email.label_tag }}</td>
-        <td>{{ form.email }}</td>
-      </tr>
-      <tr>
-        <td>{{ form.password.label_tag }}</td>
-        <td>{{ form.password }}</td>
-      </tr>
-    </table>
-    <input type="submit" value="login" />
-    <input type="hidden" name="next" value="{{ next }}" />
-  </form>
-
-{% endblock %} {% endcomment %}
-
-{% block content %}
-    <h2>Register</h2>
-    <form method="POST" action="/api/account/register">
-		{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save</button>
-    </form>
-{% endblock %}
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Login</title>
+	<style>
+		input {
+			width: 33%;
+			margin-left: 33%;
+			margin-right: 33%;
+		}
+	</style>
+</head>
+<h2>Register</h2>
+	<body>
+		{% block content %}
+		{% endblock %}
+		<header class="header">
+		</header>
+		<h2>Register</h2>
+		{% comment %} Trick to avoid redirection after the POST{% endcomment %}
+		{% comment %} <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>  {% endcomment %}
+		<form method="POST" id="loginForm">
+			<label for="email">Email: </label>
+			<input id="email" name="email">
+			<label for="first_name">First name: </label>
+			<input id="first_name" name="first_name">
+			<label for="last_name">Last name: </label>
+			<input id="last_name" name="last_name">
+			<label for="password">Password: </label>
+			<input id="password" name="password">
+			<label for="password2">Password confirmation: </label>
+			<input id="password2" name="password2">
+			<label for="date_of_birth">Date of birth: </label>
+			<input id="date_of_birth" name="date_of_birth">
+			<input type="submit" value="Login">
+		</form>
+		<p id="error" style="color: red; font-weight: bolder;"></p>
+		<script>
+			window.addEventListener( "load", function () {
+				function sendData() {
+				  const XHR = new XMLHttpRequest();
+				  const FD = new FormData( form );
+			  
+				  XHR.addEventListener( "load", function(event) {
+				  } );
+				  XHR.addEventListener( "error", (event) => {
+				  } );
+	
+				  XHR.onreadystatechange = () => {
+					if (XHR.readyState == XMLHttpRequest.DONE) {
+						const response = JSON.parse(XHR.responseText);
+						console.log(response);
+						console.log(XHR.status)
+						if (XHR.status == 201) {
+							window.location.href = "/";
+						}
+						else {
+							const paragraph = document.getElementById("error");
+							paragraph.innerHTML = '<b><i>Invalid infos<b><i>';
+							paragraph.appendChild(error);
+						}
+					}
+				}
+				  // Set up our request
+				  XHR.open( "POST", "/api/account/register");
+			  
+				  // The data sent is what the user provided in the form
+				  XHR.send( FD );
+				}
+				// Access the form element...
+				const form = document.getElementById( "loginForm" );
+	
+				// ...and take over its submit event.
+				form.addEventListener( "submit", function ( event ) {
+				  event.preventDefault();
+				  sendData();
+				} );
+			  } );
+	</script>
+	</body>
