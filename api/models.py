@@ -3,6 +3,7 @@ import datetime
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.utils import timezone
 from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser)
+import uuid
 
 # Authentication API
 
@@ -51,7 +52,7 @@ class MyUser(AbstractBaseUser):
 	date_of_birth = models.DateField()
 	first_name = models.CharField(max_length=64)
 	last_name = models.CharField(max_length=64)
-	object = MyUserManager()
+	objects = MyUserManager()
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = ['date_of_birth', 'password', 'password2', 'first_name', 'last_name']
 
@@ -70,12 +71,12 @@ class MyUser(AbstractBaseUser):
 
 
 class Note(models.Model):
-	id = models.UUIDField(primary_key=True)
-	userId = models.UUIDField()
-	createdAt = models.DateTimeField()
-	updatedAt = models.DateTimeField()
-	title = models.CharField(max_length=50)
-	text = models.TextField()
+	id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+	created_by = models.CharField(max_length=100)
+	created_at = models.DateTimeField()
+	updated_at = models.DateTimeField()
+	name = models.CharField(max_length=50)
+	description = models.TextField()
 
 	def __str__(self):
 		return self.title

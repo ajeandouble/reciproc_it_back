@@ -33,4 +33,9 @@ class RegistrationSerializer(serializers.ModelSerializer):
 class NoteSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Note
-		fields = ('id', 'userId', 'text', 'createdAt', 'updatedAt', 'title')
+		fields = ('id', 'created_by', 'description', 'created_at', 'updated_at', 'name')
+
+class NoteUpdateSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Note
+		fields = ('id', 'description', 'updated_at', 'name')

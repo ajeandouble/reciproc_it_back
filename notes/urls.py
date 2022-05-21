@@ -17,13 +17,21 @@ from django.contrib import admin
 from django.urls import path
 from api import views as api_views
 from app import views as app_views
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     
     # API VIEWS
-    path('api/listNotes', api_views.NoteList.as_view()),
-    path('api/noteDetail/<uuid:userId>/', api_views.NoteDetail.as_view()),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/notesList', api_views.NotesList.as_view()),
+    path('api/noteAdd', api_views.NoteAdd.as_view()),
+    path('api/noteDetail/<uuid:pk>/', api_views.NoteDetail.as_view()),
+    path('api/noteUpdate/<uuid:pk>/', api_views.NoteUpdate.as_view()),
     path('api/account/register', api_views.RegistrationView.as_view(), name='api/account/register'),
     path('api/account/login', api_views.LoginView.as_view(), name='api/account/login'),
     
