@@ -1,6 +1,7 @@
 
    
 from rest_framework import serializers
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from .models import Note
 from .models import MyUser
 
@@ -28,14 +29,41 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+
+class RefreshTokenSerializer(serializers.Serializer):
+    """
+		Refresh token serializer used by the logout view.
+    """
+    refresh = serializers.CharField()
+
+    default_error_messages = {
+        'bad_token': 'Token is invalid or expired'
+    }
+
+    def validate(self, attrs):
+        self.token = attrs['refresh']
+        return attrs
+
+    def save(self, **kwargs):
+        try:
+            RefreshToken(self.token).blacklist()
+        except TokenError:
+            self.fail('bad_token')
     
 # Notes serializers
 class NoteSerializer(serializers.ModelSerializer):
+	"""
+		Used for the creation and retrieval of notes.
+	"""
 	class Meta:
 		model = Note
 		fields = ('id', 'created_by', 'description', 'created_at', 'updated_at', 'name')
 
 class NoteUpdateSerializer(serializers.ModelSerializer):
+	"""
+		Used to update only the relevant fields.
+	"""
 	class Meta:
 		model = Note
 		fields = ('id', 'description', 'updated_at', 'name')

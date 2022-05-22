@@ -8,6 +8,9 @@ import uuid
 # Authentication API
 
 class MyUserManager(BaseUserManager):
+	"""
+		Overrides default django user model.
+	"""
 	def create_user(self, email, date_of_birth, first_name, last_name, password):
 		if not email:
 			raise ValueError('Users must have an email address')
@@ -31,6 +34,7 @@ class MyUserManager(BaseUserManager):
 		user.save(using=self._db)
 		return user
 
+
 	def create_superuser(self, email, date_of_birth, first_name, last_name, password):
 		user = self.create_user(
 			email,
@@ -45,6 +49,10 @@ class MyUserManager(BaseUserManager):
 
 
 class MyUser(AbstractBaseUser):
+	"""
+		User account model.
+		DB fields:	email, date_of_birth, firstname, lastname, password
+	"""
 	email = models.EmailField(
 		max_length=255,
 		unique=True,
@@ -69,12 +77,26 @@ class MyUser(AbstractBaseUser):
 
 # Note API
 
-
-class Note(models.Model):
+class BaseNote(models.Model):
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 	created_by = models.CharField(max_length=100)
 	created_at = models.DateTimeField()
 	updated_at = models.DateTimeField()
+
+	class Meta:
+		abstract = True
+  
+class Note(BaseNote):
+	"""
+ 		Inherits from abstract base class.
+		DB fields:
+			id (primarey key, uuid type, unique with auto-increment)
+			created_by (id of the user)
+			created_at (time stamp for creation time)
+			updated_at (time stamp for update time)
+			name (note title)
+			description (note content)
+	"""
 	name = models.CharField(max_length=50)
 	description = models.TextField()
 

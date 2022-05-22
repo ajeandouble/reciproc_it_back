@@ -13,8 +13,6 @@
 	<header class="header">
 	</header>
 	<h2>Login</h2>
-	{% comment %} Trick to avoid redirection after the POST{% endcomment %}
-	{% comment %} <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>  {% endcomment %}
 	<form method="POST" id="loginForm">
 		<label for="loginForm">Email: </label>
 		<input id="email" name="email">
@@ -49,7 +47,7 @@
 				}
 			}
 			  // Set up our request
-			  XHR.open( "POST", "/api/account/login");
+			  XHR.open( "POST", "/api/account/login/");
 		  
 			  // The data sent is what the user provided in the form
 			  XHR.send( FD );

@@ -4,6 +4,14 @@ from django.http import HttpResponseRedirect
 from .forms import ( RegisterForm, LoginForm )
 import requests
 
+# This app has solely been added for test-purposes of the register/login process.
+# I found the pdf instructions to be a bit ambiguous about whether I should add an actual
+# registration form.
+# In typical production setup I do believe we would either:
+#  - another front consuming the API authorized authorized by the CORS policy
+#  - re-implement views or use them directly from the front main app
+# I have tested all entry points on postman and it seems to work fine
+
 def homePageView(request):
 	# if request.method == 'POST':
 	# 	form = LoginForm(request.POST)
