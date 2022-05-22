@@ -5,6 +5,7 @@ from .forms import ( RegisterForm, LoginForm )
 import requests
 
 # This app has solely been added for test-purposes of the register/login process.
+# It uses 
 # I found the pdf instructions to be a bit ambiguous about whether I should add an actual
 # registration form.
 # In typical production setup I do believe we would either:
